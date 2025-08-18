@@ -1,5 +1,5 @@
 [package]
-name = "face-stretcher-wasm"
+name = "rust-learning-project"
 version = "0.1.0"
 edition = "2021"
 description = "Mario 64–style face stretcher rebuilt in Rust + WebAssembly for the web (mesh, physics, and image pipeline in Rust)."
