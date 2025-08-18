@@ -1,16 +1,33 @@
-# {{project-name}}
+# rust-learning-project
 
-[![Crates.io](https://img.shields.io/crates/v/{{project-name}}.svg)](https://crates.io/crates/{{project-name}})
-[![Docs.rs](https://docs.rs/{{project-name}}/badge.svg)](https://docs.rs/{{project-name}})
-[![CI](https://github.com/{{gh-username}}/{{project-name}}/workflows/CI/badge.svg)](https://github.com/{{gh-username}}/{{project-name}}/actions)
+[![Crates.io](https://img.shields.io/crates/v/rust-learning-project.svg)](https://crates.io/crates/rust-learning-project)
+[![Docs.rs](https://docs.rs/rust-learning-project/badge.svg)](https://docs.rs/rust-learning-project)
+[![CI](https://github.com/fderuiter/rust-learning-project/workflows/CI/badge.svg)](https://github.com/fderuiter/rust-learning-project/actions)
 
 ## Installation
+
+### Development Environment Setup
+
+For a quick setup of your development environment, run the provided script. This will ensure you have the necessary WebAssembly build target installed.
+
+```bash
+./setup_dev.sh
+```
+
+If you prefer a manual setup, follow the instructions below.
 
 ### Cargo
 
 * Install the rust toolchain in order to have cargo installed by following
   [this](https://www.rust-lang.org/tools/install) guide.
-* run `cargo install {{project-name}}`
+* run `cargo install rust-learning-project`
+
+### WebAssembly Target
+
+* Install the WebAssembly build target, which is required for compiling to Wasm:
+  ```bash
+  rustup target add wasm32-unknown-unknown
+  ```
 
 ## License
 
