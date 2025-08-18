@@ -3,7 +3,7 @@ name = "face-stretcher-wasm"
 version = "0.1.0"
 edition = "2021"
 description = "Mario 64–style face stretcher rebuilt in Rust + WebAssembly for the web (mesh, physics, and image pipeline in Rust)."
-repository = "https://github.com/fderuiter/face-stretcher-wasm"
+repository = "https://github.com/fderuiter/rust-learning-project"
 license = "MIT OR Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
