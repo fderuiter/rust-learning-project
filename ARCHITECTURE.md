@@ -25,3 +25,15 @@ This document outlines the architectural decisions made for this project.
 
 **Alternatives Considered**:
 - **Pure Rust with `web-sys`**: While possible, this approach would require writing a lot of boilerplate code for WebGL interactions, increasing complexity and development time. It would also mean reinventing many of the features that Three.js already provides.
+
+## Physics Engine
+
+**Decision**: We will implement a custom spring-mass system for the physics simulation.
+
+**Justification**:
+- **Simplicity**: A spring-mass system is a relatively simple and intuitive model for simulating soft-body dynamics, which is exactly what we need for the deformable face effect.
+- **Performance**: This model is computationally inexpensive, making it well-suited for real-time applications in the browser.
+- **Control**: A custom implementation gives us full control over the physics parameters (stiffness, damping, etc.), allowing us to fine-tune the behavior to achieve the desired aesthetic.
+
+**Alternatives Considered**:
+- **Using a pre-built physics engine (e.g., Rapier, Box2D)**: While these engines are powerful and feature-rich, they are also more complex than what our project requires. Integrating a full physics engine would add unnecessary overhead and complexity for the simple soft-body simulation we need.

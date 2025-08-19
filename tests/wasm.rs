@@ -53,3 +53,11 @@ fn test_mouse_interaction() {
     let positions_after_mouseup = get_vertex_positions(&controller, 4);
     assert_ne!(positions_after_mouseup[0], 4.0);
 }
+
+#[wasm_bindgen_test]
+#[should_panic]
+fn test_face_controller_new_invalid_input() {
+    let positions = vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0]; // Invalid length
+    let indices = vec![0, 1, 2, 0, 2, 3];
+    FaceController::new(&positions, &indices);
+}
