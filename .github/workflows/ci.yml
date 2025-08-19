@@ -42,7 +42,10 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
+          toolchain: 1.83.0
           components: clippy
+      - name: Install Clippy manually
+        run: rustup component add clippy
       - uses: Swatinem/rust-cache@v2
       - name: Clippy check
         run: cargo clippy --all-targets --all-features --workspace -- -D warnings
