@@ -1,4 +1,6 @@
+use crate::physics::{Physics, Spring};
 use nalgebra::Vector3;
+use std::collections::HashSet;
 use wasm_bindgen::prelude::*;
 use js_sys;
 
@@ -13,6 +15,8 @@ pub struct Vertex {
     pub acceleration: Vector3<f32>,
     #[wasm_bindgen(skip)]
     pub resting_position: Vector3<f32>,
+    #[wasm_bindgen(skip)]
+    pub mass: f32,
 }
 
 #[wasm_bindgen]
@@ -21,6 +25,10 @@ pub struct Mesh {
     pub vertices: Vec<Vertex>,
     #[wasm_bindgen(skip)]
     pub indices: Vec<u32>,
+    #[wasm_bindgen(skip)]
+    pub springs: Vec<Spring>,
+    #[wasm_bindgen(skip)]
+    pub physics: Physics,
 }
 
 #[wasm_bindgen]
@@ -36,13 +44,43 @@ impl Mesh {
                     old_position: position,
                     acceleration: Vector3::zeros(),
                     resting_position: position,
+                    mass: 1.0,
                 }
             })
-            .collect();
+            .collect::<Vec<Vertex>>();
+
+        let mut springs = Vec::new();
+        let mut existing_springs = HashSet::new();
+
+        for triangle in indices.chunks_exact(3) {
+            let (a, b, c) = (triangle[0] as usize, triangle[1] as usize, triangle[2] as usize);
+
+            let edges = [(a, b), (b, c), (c, a)];
+            for (v1_idx, v2_idx) in edges.iter() {
+                let (v1_idx, v2_idx) = if v1_idx < v2_idx {
+                    (*v1_idx, *v2_idx)
+                } else {
+                    (*v2_idx, *v1_idx)
+                };
+
+                if existing_springs.insert((v1_idx, v2_idx)) {
+                    let rest_length = (vertices[v1_idx].position - vertices[v2_idx].position).magnitude();
+                    springs.push(Spring {
+                        vertex_a_index: v1_idx,
+                        vertex_b_index: v2_idx,
+                        rest_length,
+                        stiffness: 1000.0, // Default stiffness
+                        damping: 10.0,     // Default damping
+                    });
+                }
+            }
+        }
 
         Mesh {
             vertices,
             indices: indices.to_vec(),
+            springs,
+            physics: Physics::new(),
         }
     }
 
@@ -57,6 +95,56 @@ impl Mesh {
 
     pub fn get_indices(&self) -> js_sys::Uint32Array {
         js_sys::Uint32Array::from(&self.indices[..])
+    }
+
+    #[wasm_bindgen]
+    pub fn apply_force(&mut self, vertex_index: usize, x: f32, y: f32, z: f32) {
+        if let Some(vertex) = self.vertices.get_mut(vertex_index) {
+            vertex.acceleration += Vector3::new(x, y, z);
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn update(&mut self) {
+        let dt = self.physics.time_step;
+        let gravity = self.physics.gravity;
+
+        for vertex in &mut self.vertices {
+            vertex.acceleration = gravity;
+        }
+
+        for spring in &self.springs {
+            let vertex_a = self.vertices[spring.vertex_a_index];
+            let vertex_b = self.vertices[spring.vertex_b_index];
+
+            let delta = vertex_a.position - vertex_b.position;
+            let distance = delta.magnitude();
+            let direction = delta.normalize();
+
+            let stretch = distance - spring.rest_length;
+            let spring_force = spring.stiffness * stretch * direction;
+
+            let relative_velocity = (vertex_a.position - vertex_a.old_position) - (vertex_b.position - vertex_b.old_position);
+            let damping_force = spring.damping * relative_velocity.dot(&direction) * direction;
+
+            let total_force = spring_force + damping_force;
+
+            let mass_a = self.vertices[spring.vertex_a_index].mass;
+            if mass_a > 0.0 {
+                self.vertices[spring.vertex_a_index].acceleration -= total_force / mass_a;
+            }
+
+            let mass_b = self.vertices[spring.vertex_b_index].mass;
+            if mass_b > 0.0 {
+                self.vertices[spring.vertex_b_index].acceleration += total_force / mass_b;
+            }
+        }
+
+        for vertex in &mut self.vertices {
+            let old_position = vertex.position;
+            vertex.position = vertex.position + (vertex.position - vertex.old_position) + vertex.acceleration * dt * dt;
+            vertex.old_position = old_position;
+        }
     }
 }
 

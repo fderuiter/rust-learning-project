@@ -1,4 +1,5 @@
 pub mod mesh;
+pub mod physics;
 
 use wasm_bindgen::prelude::*;
 
