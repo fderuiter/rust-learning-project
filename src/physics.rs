@@ -14,12 +14,18 @@ pub struct Physics {
     pub gravity: Vector3<f32>,
 }
 
-impl Physics {
-    pub fn new() -> Self {
+impl Default for Physics {
+    fn default() -> Self {
         Self {
             time_step: 0.01,
             gravity: Vector3::new(0.0, -9.81, 0.0),
         }
+    }
+}
+
+impl Physics {
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
