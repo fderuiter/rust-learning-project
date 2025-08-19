@@ -2,6 +2,8 @@
 .cargo-ok
 .DS_Store
 dist/
+node_modules/
+package-lock.json
 {% if crate_type == "lib" %}
 Cargo.lock
 {% endif %}
