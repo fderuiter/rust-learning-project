@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import init, { FaceController } from 'rust-learning-project';
 
 // Scene
 const scene = new THREE.Scene();
@@ -28,6 +29,27 @@ scene.add(directionalLight);
 // Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
+
+// Create a placeholder geometry
+const geometry = new THREE.IcosahedronGeometry(1, 1);
+const material = new THREE.MeshNormalMaterial();
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+async function main() {
+    await init();
+
+    const positions = geometry.attributes.position.array;
+    const indices = new Uint32Array(geometry.index.array);
+
+    console.log('Initializing Wasm module with:');
+    console.log(`${positions.length / 3} vertices`);
+    console.log(`${indices.length / 3} triangles`);
+
+    const faceController = new FaceController(positions, indices);
+    console.log('FaceController instance:', faceController);
+}
+main();
 
 // Animation loop
 const animate = () => {
