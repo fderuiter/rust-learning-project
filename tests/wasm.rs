@@ -1,3 +1,5 @@
+#![cfg(target_arch = "wasm32")]
+
 use rust_learning_project::FaceController;
 use wasm_bindgen_test::*;
 
