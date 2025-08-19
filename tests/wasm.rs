@@ -17,6 +17,7 @@ fn test_face_controller_new() {
     let indices = vec![0, 1, 2, 0, 2, 3];
     let controller = FaceController::new(&positions, &indices);
     assert!(!controller.get_vertex_buffer_ptr().is_null());
+    assert_eq!(controller.get_vertex_count(), 4);
 }
 
 #[wasm_bindgen_test]

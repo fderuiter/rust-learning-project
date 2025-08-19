@@ -21,3 +21,14 @@ The `Mesh` struct represents the entire 3D mesh.
 
 - **`vertices: Vec<Vertex>`**: A vector of all the vertices in the mesh.
 - **`indices: Vec<u32>`**: A vector of indices that define the triangles of the mesh. Each group of three indices represents a single triangle.
+
+## Initialization
+
+The `Mesh` is initialized with the `Mesh::new` function.
+
+### `Mesh::new(positions: &[f32], indices: &[u32]) -> Result<Mesh, JsValue>`
+
+- **`positions`**: A flat slice of `f32` values representing the vertex positions. The length of this slice must be a multiple of 3, as each vertex is represented by three consecutive values (x, y, z).
+- **`indices`**: A slice of `u32` values representing the vertex indices that form the triangles of the mesh.
+
+The function returns a `Result<Mesh, JsValue>`. If the length of the `positions` slice is not a multiple of 3, it returns an error.
