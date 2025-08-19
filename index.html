@@ -3,9 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <title>Rust WASM</title>
+    <style>
+      body { margin: 0; }
+      canvas { display: block; }
+    </style>
   </head>
   <body>
-    <canvas id="webgl"></canvas>
+    <canvas id="main-canvas"></canvas>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.138.0/build/three.module.js"
+        }
+      }
+    </script>
     <link data-trunk rel="rust" />
     <script type="module" src="/main.js"></script>
   </body>

@@ -29,6 +29,26 @@ If you prefer a manual setup, follow the instructions below.
   rustup target add wasm32-unknown-unknown
   ```
 
+## Development
+
+To start the development server, run:
+
+```bash
+trunk serve
+```
+
+This will build the application, start a server, and watch for any file changes. You can view the application at `http://localhost:8080`.
+
+## Project Layout
+
+-   `src/`: Contains the Rust source code for the application logic.
+-   `main.js`: The main JavaScript entry point for the application. It sets up the Three.js scene and interacts with the Wasm module.
+-   `index.html`: The main HTML file for the application.
+-   `Cargo.toml`: The Rust package manager configuration file.
+-   `rust-toolchain.toml`: Specifies the Rust toolchain version.
+-   `ARCHITECTURE.md`: Documents the architectural decisions for the project.
+-   `docs/`: Contains additional documentation.
+
 ## License
 
 Licensed under either of

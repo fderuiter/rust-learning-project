@@ -5,6 +5,40 @@ First off, thank you for considering contributing to {{project-name}}.
 If your contribution is not straightforward, please first discuss the change you
 wish to make by creating a new issue before making the change.
 
+## Branching Strategy
+
+This project uses [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) as its branching strategy.
+
+-   `main`: Contains production-ready code.
+-   `develop`: The main development branch. All feature branches are created from here.
+-   `feature/*`: For new features. Branched from `develop`.
+-   `release/*`: For preparing new production releases. Branched from `develop`.
+-   `hotfix/*`: For critical production fixes. Branched from `main`.
+
+## Commit Messages
+
+Commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This helps in automating changelog generation and makes the commit history more readable.
+
+A commit message consists of a **header**, a **body**, and a **footer**.
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+## CI Expectations
+
+The project has a Continuous Integration (CI) pipeline configured to run on every pull request. The CI pipeline runs the following checks:
+
+-   `cargo fmt -- --check`: Checks for code formatting issues.
+-   `cargo clippy`: Lints the code for common mistakes.
+-   `cargo test`: Runs the test suite.
+
+All checks must pass before a pull request can be merged.
+
 ## Reporting issues
 
 Before reporting an issue on the
