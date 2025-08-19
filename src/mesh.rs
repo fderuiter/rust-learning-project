@@ -1,8 +1,8 @@
 use crate::physics::{self, Physics, Spring};
+use js_sys;
 use nalgebra::Vector3;
 use std::collections::HashSet;
 use wasm_bindgen::prelude::*;
-use js_sys;
 
 #[wasm_bindgen]
 #[derive(Clone, Copy)]
@@ -53,7 +53,11 @@ impl Mesh {
         let mut existing_springs = HashSet::new();
 
         for triangle in indices.chunks_exact(3) {
-            let (a, b, c) = (triangle[0] as usize, triangle[1] as usize, triangle[2] as usize);
+            let (a, b, c) = (
+                triangle[0] as usize,
+                triangle[1] as usize,
+                triangle[2] as usize,
+            );
 
             let edges = [(a, b), (b, c), (c, a)];
             for (v1_idx, v2_idx) in edges.iter() {
@@ -64,7 +68,8 @@ impl Mesh {
                 };
 
                 if existing_springs.insert((v1_idx, v2_idx)) {
-                    let rest_length = (vertices[v1_idx].position - vertices[v2_idx].position).magnitude();
+                    let rest_length =
+                        (vertices[v1_idx].position - vertices[v2_idx].position).magnitude();
                     springs.push(Spring {
                         vertex_a_index: v1_idx,
                         vertex_b_index: v2_idx,
@@ -124,9 +129,7 @@ mod tests {
 
     #[test]
     fn test_mesh_new() {
-        let positions = vec![
-            0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-        ];
+        let positions = vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0];
         let indices = vec![0, 1, 2, 0, 2, 3];
         let mesh = Mesh::new(&positions, &indices);
 

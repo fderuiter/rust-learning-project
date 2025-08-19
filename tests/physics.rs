@@ -1,6 +1,6 @@
+use nalgebra::Vector3;
 use rust_learning_project::mesh::{Mesh, Vertex};
 use rust_learning_project::physics::Spring;
-use nalgebra::Vector3;
 
 #[test]
 fn test_spring_force() {
@@ -66,10 +66,7 @@ fn test_verlet_integration() {
 
 #[test]
 fn test_oscillation() {
-    let mut mesh = Mesh::new(
-        &[0.0, 0.0, 0.0, 1.1, 0.0, 0.0],
-        &[],
-    );
+    let mut mesh = Mesh::new(&[0.0, 0.0, 0.0, 1.1, 0.0, 0.0], &[]);
     mesh.vertices[0].mass = 0.0; // Pin this vertex
     mesh.springs = vec![Spring {
         vertex_a_index: 0,

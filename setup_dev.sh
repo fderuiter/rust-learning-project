@@ -8,6 +8,9 @@ then
     exit 1
 fi
 
+echo "Ensuring rustfmt component is installed..."
+rustup component add rustfmt
+
 echo "Ensuring wasm32-unknown-unknown target is installed..."
 rustup target add wasm32-unknown-unknown
 

@@ -58,8 +58,9 @@ pub fn update(mesh: &mut Mesh, time_step: f32, gravity: &Vector3<f32>) {
 
     for vertex in &mut mesh.vertices {
         let old_position = vertex.position;
-        vertex.position =
-            vertex.position + (vertex.position - vertex.old_position) + vertex.acceleration * time_step * time_step;
+        vertex.position = vertex.position
+            + (vertex.position - vertex.old_position)
+            + vertex.acceleration * time_step * time_step;
         vertex.old_position = old_position;
     }
 }
