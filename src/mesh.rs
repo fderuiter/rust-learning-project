@@ -1,4 +1,4 @@
-use crate::physics::{Physics, Spring};
+use crate::physics::{self, Physics, Spring};
 use nalgebra::Vector3;
 use std::collections::HashSet;
 use wasm_bindgen::prelude::*;
@@ -93,6 +93,13 @@ impl Mesh {
         js_sys::Float32Array::from(&positions[..])
     }
 
+    pub fn get_vertex_positions_flat(&self) -> Vec<f32> {
+        self.vertices
+            .iter()
+            .flat_map(|v| v.position.iter().cloned())
+            .collect()
+    }
+
     pub fn get_indices(&self) -> js_sys::Uint32Array {
         js_sys::Uint32Array::from(&self.indices[..])
     }
@@ -106,45 +113,8 @@ impl Mesh {
 
     #[wasm_bindgen]
     pub fn update(&mut self) {
-        let dt = self.physics.time_step;
-        let gravity = self.physics.gravity;
-
-        for vertex in &mut self.vertices {
-            vertex.acceleration = gravity;
-        }
-
-        for spring in &self.springs {
-            let vertex_a = self.vertices[spring.vertex_a_index];
-            let vertex_b = self.vertices[spring.vertex_b_index];
-
-            let delta = vertex_a.position - vertex_b.position;
-            let distance = delta.magnitude();
-            let direction = delta.normalize();
-
-            let stretch = distance - spring.rest_length;
-            let spring_force = spring.stiffness * stretch * direction;
-
-            let relative_velocity = (vertex_a.position - vertex_a.old_position) - (vertex_b.position - vertex_b.old_position);
-            let damping_force = spring.damping * relative_velocity.dot(&direction) * direction;
-
-            let total_force = spring_force + damping_force;
-
-            let mass_a = self.vertices[spring.vertex_a_index].mass;
-            if mass_a > 0.0 {
-                self.vertices[spring.vertex_a_index].acceleration -= total_force / mass_a;
-            }
-
-            let mass_b = self.vertices[spring.vertex_b_index].mass;
-            if mass_b > 0.0 {
-                self.vertices[spring.vertex_b_index].acceleration += total_force / mass_b;
-            }
-        }
-
-        for vertex in &mut self.vertices {
-            let old_position = vertex.position;
-            vertex.position = vertex.position + (vertex.position - vertex.old_position) + vertex.acceleration * dt * dt;
-            vertex.old_position = old_position;
-        }
+        let (time_step, gravity) = (self.physics.time_step, self.physics.gravity);
+        physics::update(self, time_step, &gravity);
     }
 }
 
