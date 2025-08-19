@@ -16,5 +16,9 @@ js-sys = "0.3.69"
 [dev-dependencies]
 wasm-bindgen-test = "0.3.42"
 
+[[test]]
+name = "physics"
+path = "tests/physics.rs"
+
 [lib]
 crate-type = ["cdylib", "rlib"]
