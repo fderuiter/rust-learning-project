@@ -1,6 +1,7 @@
 /target
 .cargo-ok
 .DS_Store
+dist/
 {% if crate_type == "lib" %}
 Cargo.lock
 {% endif %}
