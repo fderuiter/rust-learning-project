@@ -17,9 +17,13 @@ pub struct FaceController {
 impl FaceController {
     #[wasm_bindgen(constructor)]
     pub fn new(positions: &[f32], indices: &[u32]) -> FaceController {
-        let mesh = Mesh::new(positions, indices);
-        let physics = Physics::new();
+        // In a real application, we'd propagate this error to the JS caller.
+        // Constructors in wasm-bindgen can't return a Result, so we'll panic.
+        let mesh = Mesh::new(positions, indices).unwrap();
+        let mut physics = Physics::new();
+        physics.init_springs(&mesh);
         let vertex_positions = mesh.get_vertex_positions_flat();
+
         FaceController {
             mesh,
             physics,
@@ -30,7 +34,7 @@ impl FaceController {
 
     pub fn tick(&mut self, dt: f32) {
         self.physics.time_step = dt;
-        self.mesh.update();
+        self.physics.update(&mut self.mesh);
         self.vertex_positions = self.mesh.get_vertex_positions_flat();
     }
 
