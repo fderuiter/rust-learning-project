@@ -1,23 +1,58 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Check if rustup is installed
-if ! command -v rustup &> /dev/null
-then
-    echo "rustup could not be found. Please install Rust from https://www.rust-lang.org/tools/install"
-    exit 1
+# Optional versions:
+#   TRUNK_VERSION=0.21.14
+#   WASM_BINDGEN_VERSION=0.2.99
+# Usage:
+#   TRUNK_VERSION=0.21.14 ./setup_dev.sh
+#   ./setup_dev.sh
+
+need() { command -v "$1" >/dev/null 2>&1; }
+
+if ! need rustup; then
+  echo "rustup not found. Install: https://www.rust-lang.org/tools/install"
+  exit 1
 fi
 
-echo "Ensuring rustfmt component is installed..."
-rustup component add rustfmt
+# Ensure toolchain/components/targets (rust-toolchain.toml will also auto-sync)
+echo "Syncing Rust toolchain…"
+rustup show >/dev/null
+rustup component add rustfmt clippy || true
+rustup target add wasm32-unknown-unknown || true
 
-echo "Ensuring wasm32-unknown-unknown target is installed..."
-rustup target add wasm32-unknown-unknown
+# Ensure cargo-binstall (optional, speeds up installs with prebuilt bins)
+if ! need cargo-binstall; then
+  echo "Installing cargo-binstall (optional)…"
+  cargo install --locked cargo-binstall || true
+fi
 
-echo "Installing trunk..."
-wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.21.14/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf - -C ~/.cargo/bin
+install_crate() {
+  local crate="$1" ver_env="$2" ver="${!ver_env:-}"
+  if need cargo-binstall; then
+    if [[ -n "$ver" ]]; then
+      cargo binstall -y "${crate}@${ver}" && return 0
+    else
+      cargo binstall -y "${crate}" && return 0
+    fi
+  fi
+  if [[ -n "$ver" ]]; then
+    cargo install --locked "$crate" --version "$ver"
+  else
+    cargo install --locked "$crate"
+  fi
+}
 
-echo "Installing wasm-bindgen-cli..."
-cargo install wasm-bindgen-cli
+echo "Installing trunk…"
+install_crate trunk TRUNK_VERSION
+
+echo "Installing wasm-bindgen-cli…"
+install_crate wasm-bindgen-cli WASM_BINDGEN_VERSION
+
+echo "Verifying…"
+trunk --version
+wasm-bindgen --version
+rustc -V
+cargo -V
 
 echo "Environment setup complete."
