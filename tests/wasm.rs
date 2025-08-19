@@ -1,5 +1,5 @@
-use wasm_bindgen_test::*;
 use rust_learning_project::FaceController;
+use wasm_bindgen_test::*;
 
 wasm_bindgen_test_configure!(run_in_browser);
 
@@ -11,9 +11,7 @@ fn get_vertex_positions(controller: &FaceController, num_vertices: usize) -> Vec
 
 #[wasm_bindgen_test]
 fn test_face_controller_new() {
-    let positions = vec![
-        0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-    ];
+    let positions = vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0];
     let indices = vec![0, 1, 2, 0, 2, 3];
     let controller = FaceController::new(&positions, &indices);
     assert!(!controller.get_vertex_buffer_ptr().is_null());
@@ -21,9 +19,7 @@ fn test_face_controller_new() {
 
 #[wasm_bindgen_test]
 fn test_tick() {
-    let positions = vec![
-        0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-    ];
+    let positions = vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0];
     let indices = vec![0, 1, 2, 0, 2, 3];
     let mut controller = FaceController::new(&positions, &indices);
 
@@ -36,9 +32,7 @@ fn test_tick() {
 
 #[wasm_bindgen_test]
 fn test_mouse_interaction() {
-    let positions = vec![
-        0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-    ];
+    let positions = vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0];
     let indices = vec![0, 1, 2, 0, 2, 3];
     let mut controller = FaceController::new(&positions, &indices);
 
