@@ -23,6 +23,12 @@ impl Physics {
     }
 }
 
+impl Default for Physics {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 pub fn update(mesh: &mut Mesh, time_step: f32, gravity: &Vector3<f32>) {
     for vertex in &mut mesh.vertices {
         vertex.acceleration = *gravity;

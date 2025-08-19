@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use rust_learning_project::FaceController;
 use wasm_bindgen_test::*;
 
