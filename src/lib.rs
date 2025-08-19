@@ -60,6 +60,10 @@ impl FaceController {
     pub fn get_vertex_buffer_ptr(&self) -> *const f32 {
         self.vertex_positions.as_ptr()
     }
+
+    pub fn get_vertex_count(&self) -> usize {
+        self.mesh.vertices.len()
+    }
 }
 
 #[wasm_bindgen]

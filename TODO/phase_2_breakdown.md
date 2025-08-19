@@ -12,7 +12,7 @@ The following plan expands each task from `phase_2.md` into concrete implementat
 - **Tests**
   - [x] Write unit tests covering vector addition, subtraction, and normalization.
 - **Documentation**
-  - [ ] Describe the `Vertex` layout and `Mesh` ownership model in `docs/mesh.md`.
+  - [x] Describe the `Vertex` layout and `Mesh` ownership model in `docs/mesh.md`.
 
 ### 2.1.2 Implement Mesh Initialization
 - **Implementation**
@@ -20,9 +20,9 @@ The following plan expands each task from `phase_2.md` into concrete implementat
   - [x] Parse flat arrays into internal `Mesh` and `Vertex` collections.
   - [x] Handle invalid input lengths and return meaningful errors.
 - **Tests**
-  - [ ] wasm-bindgen test passing a cube mesh and verifying vertex/face counts and error handling.
+  - [x] wasm-bindgen test passing a cube mesh and verifying vertex/face counts and error handling.
 - **Documentation**
-  - [ ] Document the initialization API and expected array formats in `docs/mesh.md`.
+  - [x] Document the initialization API and expected array formats in `docs/mesh.md`.
 
 ## 2.2 Physics Engine Implementation
 
@@ -43,7 +43,7 @@ The following plan expands each task from `phase_2.md` into concrete implementat
 - **Tests**
   - [x] Unit test forces on a two-node system for correct restoring and damping behavior.
 - **Documentation**
-  - [ ] Document the spring constraint equations in `docs/physics.md`.
+  - [x] Document the spring constraint equations in `docs/physics.md`.
 
 #### 2.2.2.2 Implement Numerical Integration
 - **Implementation**
@@ -52,7 +52,7 @@ The following plan expands each task from `phase_2.md` into concrete implementat
 - **Tests**
   - [x] Write tests verifying motion under constant force and oscillation in a simple spring.
 - **Documentation**
-  - [ ] Explain the integration scheme and update `docs/physics.md`.
+  - [x] Explain the integration scheme and update `docs/physics.md`.
 
 ## 2.3 Wasm API Design and Implementation
 
@@ -73,5 +73,5 @@ The following plan expands each task from `phase_2.md` into concrete implementat
 - **Tests**
   - [x] Integration tests verifying state updates and that the returned pointer is non-null.
 - **Documentation**
-  - [ ] Update `docs/api.md` with function descriptions and usage examples.
+  - [x] Update `docs/api.md` with function descriptions and usage examples.
 
