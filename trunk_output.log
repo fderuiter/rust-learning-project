@@ -1,1 +1,13 @@
-2025-08-19T16:23:41.771894Z  INFO 🚀 Starting trunk 0.21.14
+2025-08-19T18:00:17.322872Z  INFO 🚀 Starting trunk 0.21.14
+2025-08-19T18:00:17.322981Z DEBUG update_check: Spawning update check skip=false
+2025-08-19T18:00:17.323712Z DEBUG Performing update check
+2025-08-19T18:00:17.325905Z DEBUG Time since last check: 26s199ms259µs821ns
+2025-08-19T18:00:17.325928Z DEBUG No refresh needed
+2025-08-19T18:00:17.325933Z DEBUG Current: 0.21.14, Most recent: 0.21.14
+2025-08-19T18:00:17.509429Z DEBUG Disable error reporting: false
+2025-08-19T18:00:17.509768Z DEBUG Enforce version - actual: 0.21.14, required: *
+2025-08-19T18:00:17.524624Z DEBUG Build cooldown: None
+2025-08-19T18:00:17.524809Z  INFO 📦 starting build
+2025-08-19T18:00:17.525824Z DEBUG spawning asset pipelines
+2025-08-19T18:00:17.674711Z DEBUG building rust-learning-project
+2025-08-19T18:00:17.674781Z DEBUG cargo args args=["build", "--target=wasm32-unknown-unknown", "--manifest-path", "/app/Cargo.toml"]
