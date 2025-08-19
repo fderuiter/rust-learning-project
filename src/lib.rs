@@ -1,3 +1,5 @@
+pub mod mesh;
+
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
