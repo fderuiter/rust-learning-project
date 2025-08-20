@@ -26,12 +26,8 @@ pub fn detect_faces(image_bytes: &[u8]) -> Result<Vec<BBox>, Box<dyn Error>> {
         flattened.push(rgb[0] as f32);
     }
 
-    let input = Tensor::new(&[
-        input_image.height() as u64,
-        input_image.width() as u64,
-        3,
-    ])
-    .with_values(&flattened)?;
+    let input = Tensor::new(&[input_image.height() as u64, input_image.width() as u64, 3])
+        .with_values(&flattened)?;
 
     let min_size = Tensor::new(&[]).with_values(&[40f32])?;
     let thresholds = Tensor::new(&[3]).with_values(&[0.6f32, 0.7f32, 0.7f32])?;

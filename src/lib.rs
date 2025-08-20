@@ -1,7 +1,7 @@
-pub mod mesh;
-pub mod physics;
 pub mod face_detection;
 pub mod image_processing;
+pub mod mesh;
+pub mod physics;
 
 use crate::mesh::Mesh;
 use crate::physics::Physics;
@@ -21,8 +21,8 @@ pub struct BBox {
 
 #[wasm_bindgen]
 pub fn detect_faces(image_bytes: &[u8]) -> Result<JsValue, JsValue> {
-    let bboxes = face_detection::detect_faces(image_bytes)
-        .map_err(|e| JsValue::from_str(&e.to_string()))?;
+    let bboxes =
+        face_detection::detect_faces(image_bytes).map_err(|e| JsValue::from_str(&e.to_string()))?;
     let result: Vec<BBox> = bboxes
         .into_iter()
         .map(|bbox| BBox {
