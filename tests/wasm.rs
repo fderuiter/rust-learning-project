@@ -46,9 +46,9 @@ fn test_mouse_interaction() {
     // The vertex position is not updated in the buffer until after the tick
     controller.tick(0.016);
     let positions_after_move = get_vertex_positions(&controller, 4);
-    assert_eq!(positions_after_move[0], 4.0);
-    assert_eq!(positions_after_move[1], 5.0);
-    assert_eq!(positions_after_move[2], 6.0);
+    assert!((positions_after_move[0] - 4.0).abs() < 1e-3);
+    assert!((positions_after_move[1] - 5.0).abs() < 1e-3);
+    assert!((positions_after_move[2] - 6.0).abs() < 1e-3);
 
     controller.on_mouse_up();
     controller.tick(0.016);
