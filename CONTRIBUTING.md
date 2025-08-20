@@ -37,7 +37,7 @@ The project has a Continuous Integration (CI) pipeline configured to run on ever
 -   `cargo clippy`: Lints the code for common mistakes.
 -   `cargo test`: Runs the test suite.
 
-All checks must pass before a pull request can be merged.
+All checks must pass before a pull request can be merged. For more details on the project's testing strategy and how to run different test suites, please see [`docs/testing.md`](docs/testing.md).
 
 ## Reporting issues
 

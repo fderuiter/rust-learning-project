@@ -1,3 +1,4 @@
+#[cfg(not(target_arch = "wasm32"))]
 pub mod face_detection;
 pub mod image_processing;
 pub mod mesh;
@@ -20,6 +21,7 @@ pub struct BBox {
 }
 
 #[wasm_bindgen]
+#[cfg(not(target_arch = "wasm32"))]
 pub fn detect_faces(image_bytes: &[u8]) -> Result<JsValue, JsValue> {
     let bboxes =
         face_detection::detect_faces(image_bytes).map_err(|e| JsValue::from_str(&e.to_string()))?;
@@ -50,7 +52,7 @@ impl FaceController {
     pub fn new(positions: &[f32], indices: &[u32]) -> FaceController {
         // In a real application, we'd propagate this error to the JS caller.
         // Constructors in wasm-bindgen can't return a Result, so we'll panic.
-        let mesh = Mesh::new(positions, indices).unwrap();
+        let mesh = Mesh::new(positions, indices).expect("Failed to create mesh");
         let mut physics = Physics::new();
         physics.init_springs(&mesh);
         let vertex_positions = mesh.get_vertex_positions_flat();
