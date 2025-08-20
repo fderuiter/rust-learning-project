@@ -8,8 +8,11 @@ fn create_test_image() -> Vec<u8> {
     img.put_pixel(0, 1, Rgba([0, 0, 255, 255]));
     img.put_pixel(1, 1, Rgba([255, 255, 0, 255]));
     let mut bytes: Vec<u8> = Vec::new();
-    img.write_to(&mut std::io::Cursor::new(&mut bytes), image::ImageOutputFormat::Png)
-        .expect("Failed to write test image");
+    img.write_to(
+        &mut std::io::Cursor::new(&mut bytes),
+        image::ImageOutputFormat::Png,
+    )
+    .expect("Failed to write test image");
     bytes
 }
 
