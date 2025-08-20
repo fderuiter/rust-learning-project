@@ -1,4 +1,4 @@
-use image::{GenericImageView, ImageError};
+use image::GenericImageView;
 use std::error::Error;
 use tensorflow::{Graph, ImportGraphDefOptions, Session, SessionOptions, SessionRunArgs, Tensor};
 
@@ -15,7 +15,7 @@ pub fn detect_faces(image_bytes: &[u8]) -> Result<Vec<BBox>, Box<dyn Error>> {
     let model = include_bytes!("../assets/mtcnn.pb");
 
     let mut graph = Graph::new();
-    graph.import_graph_def(&*model, &ImportGraphDefOptions::new())?;
+    graph.import_graph_def(model, &ImportGraphDefOptions::new())?;
 
     let input_image = image::load_from_memory(image_bytes)?;
 
