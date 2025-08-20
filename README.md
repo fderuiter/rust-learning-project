@@ -39,6 +39,30 @@ trunk serve
 
 This will build the application, start a server, and watch for any file changes. You can view the application at `http://localhost:8080`.
 
+## Testing
+
+This project uses a two-tiered testing approach. For a detailed explanation of the testing strategy, see [`docs/testing.md`](docs/testing.md).
+
+### Native (Rust) Tests
+
+To run all unit and integration tests for the native Rust code, use:
+
+```bash
+cargo test --all-features --workspace
+```
+
+### WebAssembly (Browser) Tests
+
+To run the Wasm integration tests in a headless browser, use:
+
+```bash
+# Run in Firefox (default)
+wasm-pack test --headless
+
+# Or run in Chrome
+wasm-pack test --headless --chrome
+```
+
 ## Project Layout
 
 -   `src/`: Contains the Rust source code for the application logic.

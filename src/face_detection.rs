@@ -67,3 +67,32 @@ pub fn detect_faces(image_bytes: &[u8]) -> Result<Vec<BBox>, Box<dyn Error>> {
 
     Ok(bboxes)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    // This is an integration test, but it's placed here to be co-located with the
+    // function it tests. It's ignored by default because it's slow and requires
+    // the `assets` directory.
+    #[test]
+    #[ignore]
+    fn test_detect_faces_on_sample_image() {
+        // The test executable will run from the root of the workspace,
+        // so the path to the asset is relative to the root.
+        let image_bytes = fs::read("assets/test_face.jpg").expect("Failed to read test image");
+        let result = detect_faces(&image_bytes);
+
+        assert!(result.is_ok(), "Face detection failed: {:?}", result.err());
+
+        let bboxes = result.unwrap();
+        assert!(!bboxes.is_empty(), "No faces detected in the test image");
+
+        // Basic sanity check on the first bounding box
+        let bbox = &bboxes[0];
+        assert!(bbox.x1 < bbox.x2);
+        assert!(bbox.y1 < bbox.y2);
+        assert!(bbox.prob > 0.9); // MTCNN is usually confident on this image
+    }
+}
