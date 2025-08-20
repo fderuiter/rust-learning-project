@@ -42,6 +42,8 @@ This will build the application, start a server, and watch for any file changes.
 ## Project Layout
 
 -   `src/`: Contains the Rust source code for the application logic.
+    -   `face_detection.rs`: Face detection using TensorFlow.
+    -   `image_processing.rs`: Image filtering using `photon-rs`.
 -   `main.js`: The main JavaScript entry point for the application. It sets up the Three.js scene and interacts with the Wasm module.
 -   `index.html`: The main HTML file for the application.
 -   `Cargo.toml`: The Rust package manager configuration file.

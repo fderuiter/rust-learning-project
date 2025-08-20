@@ -1,9 +1,39 @@
 pub mod mesh;
 pub mod physics;
+pub mod face_detection;
+pub mod image_processing;
 
 use crate::mesh::Mesh;
 use crate::physics::Physics;
 use wasm_bindgen::prelude::*;
+
+use serde::Serialize;
+
+#[wasm_bindgen]
+#[derive(Serialize)]
+pub struct BBox {
+    pub x1: f32,
+    pub y1: f32,
+    pub x2: f32,
+    pub y2: f32,
+    pub prob: f32,
+}
+
+#[wasm_bindgen]
+pub fn detect_faces(image_bytes: &[u8]) -> JsValue {
+    let bboxes = face_detection::detect_faces(image_bytes).unwrap_or_default();
+    let result: Vec<BBox> = bboxes
+        .into_iter()
+        .map(|bbox| BBox {
+            x1: bbox.x1,
+            y1: bbox.y1,
+            x2: bbox.x2,
+            y2: bbox.y2,
+            prob: bbox.prob,
+        })
+        .collect();
+    JsValue::from_serde(&result).unwrap()
+}
 
 #[wasm_bindgen]
 pub struct FaceController {

@@ -19,7 +19,11 @@ Upon loading, the vertex and index data is extracted from the model's geometry a
 
 ## User Interaction
 
-The application uses a `Raycaster` to detect mouse interactions with the 3D model.
+The application supports the following user interactions:
+
+- **Image Upload**: Users can upload an image using the file input. The uploaded image is applied as a texture to the 3D model, and face detection is performed on it.
+- **Filter Buttons**: Users can apply grayscale and sepia filters to the uploaded image by clicking the corresponding buttons.
+- **Mouse Interaction**: The application uses a `Raycaster` to detect mouse interactions with the 3D model.
 
 - **Mousedown**: When the user clicks on the model, a ray is cast from the camera to the mouse position. The closest intersected vertex is identified, and its index is passed to the `faceController.on_mouse_down()` function.
 - **Mousemove**: When the user drags the mouse while holding the button down, the new mouse position is used to calculate a new position for the selected vertex in 3D space. This new position is passed to the `faceController.on_mouse_move()` function.
