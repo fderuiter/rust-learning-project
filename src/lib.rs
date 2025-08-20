@@ -67,7 +67,10 @@ impl FaceController {
 
     pub fn tick(&mut self, dt: f32) {
         self.physics.time_step = dt;
-        self.physics.update(&mut self.mesh);
+        self.physics.update(
+            &mut self.mesh,
+            self.dragged_vertex_index.map(|i| i as usize),
+        );
         self.vertex_positions = self.mesh.get_vertex_positions_flat();
     }
 
