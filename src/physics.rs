@@ -62,9 +62,12 @@ impl Physics {
         }
     }
 
-    pub fn update(&self, mesh: &mut Mesh) {
+    pub fn update(&self, mesh: &mut Mesh, dragged_vertex_index: Option<usize>) {
         // Apply gravity
-        for vertex in &mut mesh.vertices {
+        for (i, vertex) in &mut mesh.vertices.iter_mut().enumerate() {
+            if Some(i) == dragged_vertex_index {
+                continue;
+            }
             vertex.acceleration = self.gravity;
         }
 
@@ -83,11 +86,12 @@ impl Physics {
                     - (vertex_b.position - vertex_b.old_position);
                 let damping_force = spring.damping * relative_velocity.dot(&direction) * direction;
                 let total_force = spring_force + damping_force;
-                if vertex_a.mass > 0.0 {
+
+                if Some(spring.vertex_a_index) != dragged_vertex_index && vertex_a.mass > 0.0 {
                     mesh.vertices[spring.vertex_a_index].acceleration -=
                         total_force / vertex_a.mass;
                 }
-                if vertex_b.mass > 0.0 {
+                if Some(spring.vertex_b_index) != dragged_vertex_index && vertex_b.mass > 0.0 {
                     mesh.vertices[spring.vertex_b_index].acceleration +=
                         total_force / vertex_b.mass;
                 }
@@ -95,7 +99,10 @@ impl Physics {
         }
 
         // Verlet integration
-        for vertex in &mut mesh.vertices {
+        for (i, vertex) in &mut mesh.vertices.iter_mut().enumerate() {
+            if Some(i) == dragged_vertex_index {
+                continue;
+            }
             let old_position = vertex.position;
             vertex.position = vertex.position
                 + (vertex.position - vertex.old_position)
@@ -164,7 +171,7 @@ mod tests {
             damping: 0.0,
         });
 
-        physics.update(&mut mesh);
+        physics.update(&mut mesh, None);
 
         // Vertex 0 should have moved right, and vertex 1 left
         assert!(mesh.vertices[0].position.x > 0.0);
@@ -185,7 +192,7 @@ mod tests {
             damping: 0.0,
         });
 
-        physics.update(&mut mesh);
+        physics.update(&mut mesh, None);
 
         // Vertex 0 should not have moved
         assert_eq!(mesh.vertices[0].position.x, 0.0);
@@ -207,7 +214,7 @@ mod tests {
 
         // This should not panic due to division by zero.
         // The `normalize()` on a zero vector results in a zero vector, so no force is applied.
-        physics.update(&mut mesh);
+        physics.update(&mut mesh, None);
 
         assert_eq!(mesh.vertices[0].position.x, 0.0);
         assert_eq!(mesh.vertices[1].position.x, 0.0);
