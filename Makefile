@@ -11,6 +11,11 @@ build:
 	@echo "Building project..."
 	@cargo build
 
+# Build the project for release
+build-release:
+	@echo "Building project for release..."
+	@trunk build --release
+
 # Format the code
 fmt:
 	@echo "Formatting code..."
