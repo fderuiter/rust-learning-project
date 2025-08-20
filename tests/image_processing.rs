@@ -1,5 +1,5 @@
-use rust_learning_project::image_processing;
 use image::{ImageBuffer, Rgba};
+use rust_learning_project::image_processing;
 
 fn create_test_image() -> Vec<u8> {
     let mut img: ImageBuffer<Rgba<u8>, Vec<u8>> = ImageBuffer::new(2, 2);
