@@ -20,8 +20,9 @@ pub struct BBox {
 }
 
 #[wasm_bindgen]
-pub fn detect_faces(image_bytes: &[u8]) -> JsValue {
-    let bboxes = face_detection::detect_faces(image_bytes).unwrap_or_default();
+pub fn detect_faces(image_bytes: &[u8]) -> Result<JsValue, JsValue> {
+    let bboxes = face_detection::detect_faces(image_bytes)
+        .map_err(|e| JsValue::from_str(&e.to_string()))?;
     let result: Vec<BBox> = bboxes
         .into_iter()
         .map(|bbox| BBox {
@@ -32,7 +33,7 @@ pub fn detect_faces(image_bytes: &[u8]) -> JsValue {
             prob: bbox.prob,
         })
         .collect();
-    JsValue::from_serde(&result).unwrap()
+    serde_wasm_bindgen::to_value(&result).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 #[wasm_bindgen]
