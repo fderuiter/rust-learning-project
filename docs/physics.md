@@ -2,6 +2,12 @@
 
 This document describes the physics engine used to simulate the soft-body dynamics of the mesh.
 
+## Overview
+
+The physics engine simulates the behavior of a soft, deformable object, like a rubber mask. This is achieved using a **spring-mass system**, where the vertices of the 3D mesh are treated as masses, and the edges of the mesh are treated as springs.
+
+When a user grabs and drags a point on the mesh, the springs connected to that point will stretch and pull on the surrounding points, creating a realistic "stretchy" effect. The properties of the springs (stiffness and damping) can be tuned to control how jiggly or rigid the mesh appears.
+
 ## `Spring`
 
 The `Spring` struct represents a connection between two vertices in the mesh.

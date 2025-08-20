@@ -39,6 +39,14 @@ trunk serve
 
 This will build the application, start a server, and watch for any file changes. You can view the application at `http://localhost:8080`.
 
+## Documentation
+
+For a comprehensive guide to the project, including a "Getting Started" tutorial and a full API reference, please see the `docs/` directory. Here are some quick links to get you started:
+
+-   [**Getting Started**](docs/getting_started.md): A step-by-step tutorial for new developers.
+-   [**API Reference**](docs/api.md): A comprehensive reference for the WebAssembly API.
+-   [**Architecture**](ARCHITECTURE.md): An overview of the project's architecture.
+
 ## Building
 
 To build the application without running a server, you can use the following commands:
