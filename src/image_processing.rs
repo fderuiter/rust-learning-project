@@ -1,5 +1,5 @@
 use wasm_bindgen::prelude::*;
-use photon_rs::{monochrome, native::open_image_from_bytes, PhotonImage};
+use photon_rs::{monochrome, native::open_image_from_bytes};
 
 #[wasm_bindgen]
 pub fn apply_grayscale(image_bytes: &[u8]) -> Result<Vec<u8>, JsValue> {
