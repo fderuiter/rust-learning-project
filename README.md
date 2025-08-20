@@ -39,6 +39,21 @@ trunk serve
 
 This will build the application, start a server, and watch for any file changes. You can view the application at `http://localhost:8080`.
 
+## Building
+
+To build the application without running a server, you can use the following commands:
+
+-   **Debug build:**
+    ```bash
+    trunk build
+    ```
+
+-   **Release build:**
+    ```bash
+    make build-release
+    ```
+    This will create an optimized build in the `dist/` directory. For more information on build optimizations, see [`docs/optimizations.md`](docs/optimizations.md).
+
 ## Testing
 
 This project uses a two-tiered testing approach. For a detailed explanation of the testing strategy, see [`docs/testing.md`](docs/testing.md).
