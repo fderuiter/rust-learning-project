@@ -2,6 +2,35 @@
 
 This document outlines the architectural decisions made for this project.
 
+## High-Level Overview
+
+The application is composed of three main parts:
+
+1.  **Frontend**: A web interface built with HTML, CSS, and JavaScript. It uses the [Three.js](https://threejs.org/) library to render the 3D scene.
+2.  **Wasm Module**: The core logic of the application is written in Rust and compiled to WebAssembly (Wasm). This includes the physics simulation, image processing, and face detection.
+3.  **Rust Crates**: The Rust code is organized into several crates, each responsible for a specific part of the application's functionality.
+
+The following diagram illustrates the interaction between these components:
+
+```mermaid
+graph TD;
+    subgraph Browser
+        A[Frontend (main.js)]
+    end
+
+    subgraph Rust
+        B[Wasm Module (lib.rs)]
+        C[Physics Crate]
+        D[Image Processing Crate]
+        E[Face Detection Crate]
+    end
+
+    A -- Calls Wasm functions --> B;
+    B -- Uses --> C;
+    B -- Uses --> D;
+    B -- Uses --> E;
+```
+
 ## Build System and Bundler
 
 **Decision**: We will use [Trunk](https://trunkrs.dev/) as the build system and bundler for this project.
