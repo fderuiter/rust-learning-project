@@ -1,4 +1,4 @@
-use crate::mesh::Mesh;
+use mesh::Mesh;
 use nalgebra::Vector3;
 use std::collections::HashSet;
 
@@ -116,6 +116,7 @@ impl Physics {
 mod tests {
     use super::*;
     use nalgebra::Vector3;
+    use mesh::Mesh;
 
     #[test]
     fn test_physics_new() {

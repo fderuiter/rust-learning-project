@@ -1,0 +1,11 @@
+[package]
+name = "image-processing"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+image = { workspace = true }
+photon-rs = { workspace = true }
+wasm-bindgen = { workspace = true }

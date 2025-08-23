@@ -1,41 +1,19 @@
-#[cfg(not(target_arch = "wasm32"))]
-pub mod face_detection;
-pub mod image_processing;
-pub mod mesh;
-pub mod physics;
-
-use crate::mesh::Mesh;
-use crate::physics::Physics;
 use wasm_bindgen::prelude::*;
 
-use serde::Serialize;
+// Import crates
+use mesh::Mesh;
+use physics::Physics;
+use image_processing;
+#[cfg(not(target_arch = "wasm32"))]
+use face_detection;
 
-#[wasm_bindgen]
-#[derive(Serialize)]
-pub struct BBox {
-    pub x1: f32,
-    pub y1: f32,
-    pub x2: f32,
-    pub y2: f32,
-    pub prob: f32,
-}
 
 #[wasm_bindgen]
 #[cfg(not(target_arch = "wasm32"))]
 pub fn detect_faces(image_bytes: &[u8]) -> Result<JsValue, JsValue> {
     let bboxes =
         face_detection::detect_faces(image_bytes).map_err(|e| JsValue::from_str(&e.to_string()))?;
-    let result: Vec<BBox> = bboxes
-        .into_iter()
-        .map(|bbox| BBox {
-            x1: bbox.x1,
-            y1: bbox.y1,
-            x2: bbox.x2,
-            y2: bbox.y2,
-            prob: bbox.prob,
-        })
-        .collect();
-    serde_wasm_bindgen::to_value(&result).map_err(|e| JsValue::from_str(&e.to_string()))
+    serde_wasm_bindgen::to_value(&bboxes).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 #[wasm_bindgen]
@@ -50,8 +28,6 @@ pub struct FaceController {
 impl FaceController {
     #[wasm_bindgen(constructor)]
     pub fn new(positions: &[f32], indices: &[u32]) -> FaceController {
-        // In a real application, we'd propagate this error to the JS caller.
-        // Constructors in wasm-bindgen can't return a Result, so we'll panic.
         let mesh = Mesh::new(positions, indices).expect("Failed to create mesh");
         let mut physics = Physics::new();
         physics.init_springs(&mesh);
@@ -101,6 +77,18 @@ impl FaceController {
         self.mesh.vertices.len()
     }
 }
+
+// Re-exporting the image processing functions from the image-processing crate
+#[wasm_bindgen]
+pub fn apply_grayscale(image_bytes: &[u8]) -> Result<Vec<u8>, JsValue> {
+    image_processing::apply_grayscale(image_bytes)
+}
+
+#[wasm_bindgen]
+pub fn apply_sepia(image_bytes: &[u8]) -> Result<Vec<u8>, JsValue> {
+    image_processing::apply_sepia(image_bytes)
+}
+
 
 #[wasm_bindgen]
 pub fn add(a: i32, b: i32) -> i32 {
