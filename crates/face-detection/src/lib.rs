@@ -2,7 +2,7 @@ use image::GenericImageView;
 use std::error::Error;
 use tensorflow::{Graph, ImportGraphDefOptions, Session, SessionOptions, SessionRunArgs, Tensor};
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize)]
 pub struct BBox {
     pub x1: f32,
     pub y1: f32,
