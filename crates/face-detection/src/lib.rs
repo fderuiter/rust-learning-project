@@ -2,15 +2,22 @@ use image::GenericImageView;
 use std::error::Error;
 use tensorflow::{Graph, ImportGraphDefOptions, Session, SessionOptions, SessionRunArgs, Tensor};
 
+/// Represents a bounding box for a detected face.
 #[derive(Debug, serde::Serialize)]
 pub struct BBox {
+    /// The x-coordinate of the top-left corner of the bounding box.
     pub x1: f32,
+    /// The y-coordinate of the top-left corner of the bounding box.
     pub y1: f32,
+    /// The x-coordinate of the bottom-right corner of the bounding box.
     pub x2: f32,
+    /// The y-coordinate of the bottom-right corner of the bounding box.
     pub y2: f32,
+    /// The probability of the detection being a face.
     pub prob: f32,
 }
 
+/// Detects faces in an image using a pre-trained MTCNN model.
 pub fn detect_faces(image_bytes: &[u8]) -> Result<Vec<BBox>, Box<dyn Error>> {
     let model = include_bytes!("../assets/mtcnn.pb");
 
@@ -77,11 +84,10 @@ mod tests {
     // function it tests. It's ignored by default because it's slow and requires
     // the `assets` directory.
     #[test]
-    #[ignore]
     fn test_detect_faces_on_sample_image() {
         // The test executable will run from the root of the workspace,
         // so the path to the asset is relative to the root.
-        let image_bytes = fs::read("assets/test_face.jpg").expect("Failed to read test image");
+        let image_bytes = fs::read("../../static/assets/test_face.jpg").expect("Failed to read test image");
         let result = detect_faces(&image_bytes);
 
         assert!(result.is_ok(), "Face detection failed: {:?}", result.err());

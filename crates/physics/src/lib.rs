@@ -2,17 +2,27 @@ use mesh::Mesh;
 use nalgebra::Vector3;
 use std::collections::HashSet;
 
+/// Represents a spring connecting two vertices in the mesh.
 pub struct Spring {
+    /// The index of the first vertex connected by the spring.
     pub vertex_a_index: usize,
+    /// The index of the second vertex connected by the spring.
     pub vertex_b_index: usize,
+    /// The length of the spring when it is at rest.
     pub rest_length: f32,
+    /// The stiffness of the spring.
     pub stiffness: f32,
+    /// The damping factor of the spring.
     pub damping: f32,
 }
 
+/// The main physics engine for the simulation.
 pub struct Physics {
+    /// The list of springs in the simulation.
     pub springs: Vec<Spring>,
+    /// The time step for the simulation.
     pub time_step: f32,
+    /// The gravity vector.
     pub gravity: Vector3<f32>,
 }
 
@@ -27,10 +37,12 @@ impl Default for Physics {
 }
 
 impl Physics {
+    /// Creates a new `Physics` instance with default values.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Initializes the springs for the simulation from a mesh.
     pub fn init_springs(&mut self, mesh: &Mesh) {
         let mut existing_springs = HashSet::new();
         for triangle in mesh.indices.chunks_exact(3) {
@@ -62,6 +74,7 @@ impl Physics {
         }
     }
 
+    /// Updates the physics simulation by applying forces and integrating the vertices' positions.
     pub fn update(&self, mesh: &mut Mesh, dragged_vertex_index: Option<usize>) {
         // Apply gravity
         for (i, vertex) in &mut mesh.vertices.iter_mut().enumerate() {
@@ -115,8 +128,8 @@ impl Physics {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use nalgebra::Vector3;
     use mesh::Mesh;
+    use nalgebra::Vector3;
 
     #[test]
     fn test_physics_new() {
