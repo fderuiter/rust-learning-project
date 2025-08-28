@@ -1,14 +1,20 @@
 use nalgebra::Vector3;
 
+/// Represents a single vertex in the mesh, with properties for physics simulation.
 #[derive(Clone, Copy, Debug)]
 pub struct Vertex {
+    /// The current position of the vertex.
     pub position: Vector3<f32>,
+    /// The position of the vertex in the previous time step, used for Verlet integration.
     pub old_position: Vector3<f32>,
+    /// The acceleration of the vertex.
     pub acceleration: Vector3<f32>,
+    /// The mass of the vertex. If mass is 0, the vertex is considered immovable.
     pub mass: f32,
 }
 
 impl Vertex {
+    /// Creates a new `Vertex` at the given position.
     pub fn new(x: f32, y: f32, z: f32) -> Vertex {
         let position = Vector3::new(x, y, z);
         Vertex {
@@ -20,15 +26,19 @@ impl Vertex {
     }
 }
 
+/// Represents a 3D mesh, composed of vertices and indices.
 pub struct Mesh {
+    /// The vertices of the mesh.
     pub vertices: Vec<Vertex>,
+    /// The indices that define the faces of the mesh.
     pub indices: Vec<u32>,
 }
 
 impl Mesh {
+    /// Creates a new `Mesh` from a flat list of positions and a list of indices.
     pub fn new(positions: &[f32], indices: &[u32]) -> Result<Mesh, String> {
         if positions.len() % 3 != 0 {
-            return Err("Invalid positions length".to_string());
+            return Err("The length of the positions array must be a multiple of 3.".to_string());
         }
         let vertices = positions
             .chunks_exact(3)
@@ -41,6 +51,7 @@ impl Mesh {
         })
     }
 
+    /// Returns a flat list of the positions of all vertices in the mesh.
     pub fn get_vertex_positions_flat(&self) -> Vec<f32> {
         self.vertices
             .iter()

@@ -7,6 +7,9 @@
       body { margin: 0; }
       canvas { display: block; }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   </head>
   <body>
     <input type="file" id="image-upload" accept="image/*" />
@@ -22,7 +25,6 @@
         }
       }
     </script>
-    <link data-trunk rel="rust" data-wasm-opt="z" />
-    <script type="module" src="/main.js"></script>
+    <link data-trunk rel="rust" data-wasm-opt="z" data-main="js/app/main.js" />
   </body>
 </html>
