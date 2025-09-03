@@ -3,6 +3,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import init, { FaceController, detect_faces, apply_grayscale, apply_sepia } from './rust_learning_project.js';
 
+/**
+ * Initializes the WebAssembly module and starts the main application.
+ */
 async function run() {
   // Initialize the Wasm module.
   const wasm = await init();
@@ -13,6 +16,10 @@ async function run() {
 
 run();
 
+/**
+ * The main function of the Three.js application.
+ * @param {object} wasm - The initialized WebAssembly module.
+ */
 function main(wasm) {
   const canvas = document.querySelector('#main-canvas');
   const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
@@ -76,6 +83,10 @@ function main(wasm) {
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
+  /**
+   * Handles the mouse down event to select and drag vertices.
+   * @param {MouseEvent} event - The mouse event.
+   */
   function onMouseDown(event) {
     if (!faceMesh) return;
 
@@ -123,6 +134,10 @@ function main(wasm) {
     }
   }
 
+  /**
+   * Handles the mouse move event to update the position of a dragged vertex.
+   * @param {MouseEvent} event - The mouse event.
+   */
   function onMouseMove(event) {
     if (!isDragging || !faceMesh) return;
 
@@ -144,6 +159,9 @@ function main(wasm) {
     }
   }
 
+  /**
+   * Handles the mouse up event to release a dragged vertex.
+   */
   function onMouseUp() {
     isDragging = false;
     draggedHandle = null;
@@ -291,6 +309,11 @@ function main(wasm) {
   });
 
 
+  /**
+   * Resizes the renderer to match the size of the canvas.
+   * @param {THREE.WebGLRenderer} renderer - The Three.js renderer.
+   * @returns {boolean} - True if the renderer was resized, false otherwise.
+   */
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
     const width = canvas.clientWidth;
@@ -302,6 +325,9 @@ function main(wasm) {
     return needResize;
   }
 
+  /**
+   * The main render loop of the application.
+   */
   function render() {
     const deltaTime = clock.getDelta();
 
