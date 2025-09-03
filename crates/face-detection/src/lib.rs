@@ -2,15 +2,34 @@ use image::GenericImageView;
 use std::error::Error;
 use tensorflow::{Graph, ImportGraphDefOptions, Session, SessionOptions, SessionRunArgs, Tensor};
 
+/// Represents a bounding box for a detected face.
+///
+/// The coordinates are normalized to the range [0, 1].
 #[derive(Debug, serde::Serialize)]
 pub struct BBox {
+    /// The x-coordinate of the top-left corner of the bounding box.
     pub x1: f32,
+    /// The y-coordinate of the top-left corner of the bounding box.
     pub y1: f32,
+    /// The x-coordinate of the bottom-right corner of the bounding box.
     pub x2: f32,
+    /// The y-coordinate of the bottom-right corner of the bounding box.
     pub y2: f32,
+    /// The probability of the detected face.
     pub prob: f32,
 }
 
+/// Detects faces in an image using a pre-trained MTCNN model.
+///
+/// # Arguments
+///
+/// * `image_bytes` - A byte slice of the image data. The image format can be
+///   any format supported by the `image` crate, such as PNG, JPEG, etc.
+///
+/// # Returns
+///
+/// A `Result` containing a `Vec` of `BBox` structs, one for each detected
+/// face, or an error if face detection fails.
 pub fn detect_faces(image_bytes: &[u8]) -> Result<Vec<BBox>, Box<dyn Error>> {
     let model = include_bytes!("../assets/mtcnn.pb");
 

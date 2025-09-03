@@ -2,21 +2,38 @@ use mesh::Mesh;
 use nalgebra::Vector3;
 use std::collections::HashSet;
 
+/// Represents a spring connecting two vertices in a mesh.
+///
+/// Springs are used to simulate soft-body physics, creating forces
+/// that pull or push vertices together based on their distance.
 pub struct Spring {
+    /// The index of the first vertex connected by the spring.
     pub vertex_a_index: usize,
+    /// The index of the second vertex connected by the spring.
     pub vertex_b_index: usize,
+    /// The length of the spring when it is at rest.
     pub rest_length: f32,
+    /// The stiffness of the spring, controlling how much force it applies.
     pub stiffness: f32,
+    /// The damping factor of the spring, used to reduce oscillations.
     pub damping: f32,
 }
 
+/// Manages the physics simulation for a mesh.
+///
+/// This includes handling springs, gravity, and updating vertex positions
+/// using Verlet integration.
 pub struct Physics {
+    /// A vector of `Spring` structs that define the connections in the mesh.
     pub springs: Vec<Spring>,
+    /// The time step for the simulation, controlling the speed and stability.
     pub time_step: f32,
+    /// The gravity vector applied to all vertices in the simulation.
     pub gravity: Vector3<f32>,
 }
 
 impl Default for Physics {
+    /// Creates a new `Physics` instance with default values.
     fn default() -> Self {
         Self {
             springs: Vec::new(),
@@ -27,10 +44,18 @@ impl Default for Physics {
 }
 
 impl Physics {
+    /// Creates a new `Physics` instance with default values.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Initializes the springs for the physics simulation from a given mesh.
+    ///
+    /// This method creates a spring for each unique edge in the mesh's triangles.
+    ///
+    /// # Arguments
+    ///
+    /// * `mesh` - A reference to the `Mesh` to create springs from.
     pub fn init_springs(&mut self, mesh: &Mesh) {
         let mut existing_springs = HashSet::new();
         for triangle in mesh.indices.chunks_exact(3) {
@@ -62,6 +87,17 @@ impl Physics {
         }
     }
 
+    /// Updates the physics simulation by one time step.
+    ///
+    /// This method applies gravity and spring forces to the vertices and then
+    /// updates their positions using Verlet integration.
+    ///
+    /// # Arguments
+    ///
+    /// * `mesh` - A mutable reference to the `Mesh` to be updated.
+    /// * `dragged_vertex_index` - An `Option<usize>` containing the index of a
+    ///   vertex that is being dragged by the user. This vertex will not be
+    ///   affected by the physics simulation.
     pub fn update(&self, mesh: &mut Mesh, dragged_vertex_index: Option<usize>) {
         // Apply gravity
         for (i, vertex) in &mut mesh.vertices.iter_mut().enumerate() {

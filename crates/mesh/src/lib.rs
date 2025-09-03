@@ -1,14 +1,33 @@
 use nalgebra::Vector3;
 
+/// Represents a single vertex in a 3D mesh.
+///
+/// This struct holds the state of a vertex for physics simulations,
+/// including its current and previous positions, acceleration, and mass.
 #[derive(Clone, Copy, Debug)]
 pub struct Vertex {
+    /// The current position of the vertex in 3D space.
     pub position: Vector3<f32>,
+    /// The position of the vertex in the previous frame, used for Verlet integration.
     pub old_position: Vector3<f32>,
+    /// The current acceleration of the vertex.
     pub acceleration: Vector3<f32>,
+    /// The mass of the vertex.
     pub mass: f32,
 }
 
 impl Vertex {
+    /// Creates a new `Vertex` at the given coordinates.
+    ///
+    /// # Arguments
+    ///
+    /// * `x` - The x-coordinate of the vertex.
+    /// * `y` - The y-coordinate of the vertex.
+    /// * `z` - The z-coordinate of the vertex.
+    ///
+    /// # Returns
+    ///
+    /// A new `Vertex` instance.
     pub fn new(x: f32, y: f32, z: f32) -> Vertex {
         let position = Vector3::new(x, y, z);
         Vertex {
@@ -20,12 +39,30 @@ impl Vertex {
     }
 }
 
+/// Represents a 3D mesh composed of vertices and indices.
+///
+/// The mesh is defined by a list of vertices and a list of indices that
+/// form triangles.
 pub struct Mesh {
+    /// A vector of `Vertex` structs that make up the mesh.
     pub vertices: Vec<Vertex>,
+    /// A vector of indices that define the triangles of the mesh.
     pub indices: Vec<u32>,
 }
 
 impl Mesh {
+    /// Creates a new `Mesh` from a flat list of vertex positions and indices.
+    ///
+    /// # Arguments
+    ///
+    /// * `positions` - A slice of `f32` values, where each group of three
+    ///   values represents the x, y, and z coordinates of a vertex.
+    /// * `indices` - A slice of `u32` values that define the triangles of the mesh.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing the new `Mesh`, or an error message if the
+    /// length of the `positions` slice is not a multiple of 3.
     pub fn new(positions: &[f32], indices: &[u32]) -> Result<Mesh, String> {
         if positions.len() % 3 != 0 {
             return Err("Invalid positions length".to_string());
@@ -41,6 +78,14 @@ impl Mesh {
         })
     }
 
+    /// Returns a flattened vector of the mesh's vertex positions.
+    ///
+    /// This is useful for passing the vertex data to rendering APIs.
+    ///
+    /// # Returns
+    ///
+    /// A `Vec<f32>` containing the x, y, and z coordinates of each vertex
+    /// in sequence.
     pub fn get_vertex_positions_flat(&self) -> Vec<f32> {
         self.vertices
             .iter()
