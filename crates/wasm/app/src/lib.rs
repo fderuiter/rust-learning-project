@@ -3,30 +3,6 @@ use wasm_bindgen::prelude::*;
 // Import crates
 use mesh::Mesh;
 use physics::Physics;
-use image_processing;
-#[cfg(not(target_arch = "wasm32"))]
-use face_detection;
-
-
-/// Detects faces in an image. This function is a wrapper around the
-/// `face_detection` crate's `detect_faces` function, and is only available
-/// when not compiling for the `wasm32` target.
-///
-/// # Arguments
-///
-/// * `image_bytes` - A byte slice of the image data.
-///
-/// # Returns
-///
-/// A `Result` containing a `JsValue` with the bounding boxes of the detected
-/// faces, or a `JsValue` with an error message.
-#[wasm_bindgen]
-#[cfg(not(target_arch = "wasm32"))]
-pub fn detect_faces(image_bytes: &[u8]) -> Result<JsValue, JsValue> {
-    let bboxes =
-        face_detection::detect_faces(image_bytes).map_err(|e| JsValue::from_str(&e.to_string()))?;
-    serde_wasm_bindgen::to_value(&bboxes).map_err(|e| JsValue::from_str(&e.to_string()))
-}
 
 /// A controller for the 3D face mesh, handling user interactions and physics.
 #[wasm_bindgen]
@@ -65,8 +41,6 @@ impl FaceController {
     }
 
     /// Advances the physics simulation by a given time step.
-    ///
-    /// # Arguments
     ///
     /// * `dt` - The time step to advance the simulation by.
     pub fn tick(&mut self, dt: f32) {
@@ -131,42 +105,3 @@ impl FaceController {
         self.mesh.vertices.len()
     }
 }
-
-// Re-exporting the image processing functions from the image-processing crate
-/// Applies a grayscale filter to an image.
-///
-/// This is a re-export of the `apply_grayscale` function from the
-/// `image-processing` crate.
-///
-/// # Arguments
-///
-/// * `image_bytes` - A byte slice of the image data in PNG format.
-///
-/// # Returns
-///
-/// A `Result` containing a `Vec<u8>` of the processed image data, or a `JsValue`
-/// with an error message if the image processing fails.
-#[wasm_bindgen]
-pub fn apply_grayscale(image_bytes: &[u8]) -> Result<Vec<u8>, JsValue> {
-    image_processing::apply_grayscale(image_bytes)
-}
-
-/// Applies a sepia filter to an image.
-///
-/// This is a re-export of the `apply_sepia` function from the
-/// `image-processing` crate.
-///
-/// # Arguments
-///
-/// * `image_bytes` - A byte slice of the image data in PNG format.
-///
-/// # Returns
-///
-/// A `Result` containing a `Vec<u8>` of the processed image data, or a `JsValue`
-/// with an error message if the image processing fails.
-#[wasm_bindgen]
-pub fn apply_sepia(image_bytes: &[u8]) -> Result<Vec<u8>, JsValue> {
-    image_processing::apply_sepia(image_bytes)
-}
-
-

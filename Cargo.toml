@@ -1,6 +1,8 @@
 [workspace]
 members = [
-    "crates/wasm-app",
+    "crates/wasm/app",
+    "crates/wasm/image-processing",
+    "crates/wasm/face-detection",
     "crates/physics",
     "crates/mesh",
     "crates/image-processing",

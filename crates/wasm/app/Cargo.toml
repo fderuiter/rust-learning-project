@@ -14,10 +14,10 @@ serde = { workspace = true }
 serde-wasm-bindgen = { workspace = true }
 
 # Local crates
-mesh = { path = "../mesh" }
-physics = { path = "../physics" }
-image-processing = { path = "../image-processing" }
-face-detection = { path = "../face-detection", optional = true }
+mesh = { path = "../../mesh" }
+physics = { path = "../../physics" }
+image-processing = { path = "../../image-processing" }
+face-detection = { path = "../../face-detection", optional = true }
 
 [features]
 default = []

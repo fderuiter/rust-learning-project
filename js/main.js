@@ -1,17 +1,24 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import init, { FaceController, detect_faces, apply_grayscale, apply_sepia } from './rust_learning_project.js';
+
+import initApp, { FaceController } from 'app';
+import initImageProcessing, { apply_grayscale, apply_sepia } from 'image-processing';
+import initFaceDetection, { detect_faces } from 'face-detection';
+
 
 /**
  * Initializes the WebAssembly module and starts the main application.
  */
 async function run() {
-  // Initialize the Wasm module.
-  const wasm = await init();
+  // Initialize the Wasm modules.
+  const appWasm = await initApp();
+  await initImageProcessing();
+  await initFaceDetection();
+
 
   // Start the Three.js application.
-  main(wasm);
+  main(appWasm);
 }
 
 run();

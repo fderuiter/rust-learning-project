@@ -22,7 +22,9 @@
         }
       }
     </script>
-    <link data-trunk rel="rust" data-wasm-opt="z" />
+    <link data-trunk rel="rust" data-wasm-opt="z" data-crate="wasm-app" data-name="app" />
+    <link data-trunk rel="rust" data-wasm-opt="z" data-crate="image-processing-wasm" data-name="image-processing" />
+    <link data-trunk rel="rust" data-wasm-opt="z" data-crate="face-detection-wasm" data-name="face-detection" />
     <script type="module" src="/main.js"></script>
   </body>
 </html>
